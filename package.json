@@ -1,0 +1,97 @@
+{
+  "name": "git-popups",
+  "displayName": "Git Popups (IntelliJ-style)",
+  "description": "IntelliJ IDEA-style VCS Operations popup and Branches popup for VS Code",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "SCM Providers",
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "extensionDependencies": [
+    "vscode.git"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "gitPopups.vcsOperations",
+        "title": "VCS Operations Popup",
+        "category": "Git Popups"
+      },
+      {
+        "command": "gitPopups.branches",
+        "title": "Branches Popup",
+        "category": "Git Popups",
+        "icon": "$(git-branch)"
+      },
+      {
+        "command": "gitPopups.toggleFavoriteBranch",
+        "title": "Toggle Favorite Branch",
+        "category": "Git Popups"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "gitPopups.vcsOperations",
+        "key": "alt+`",
+        "mac": "ctrl+v",
+        "when": "!terminalFocus"
+      },
+      {
+        "command": "gitPopups.branches",
+        "key": "ctrl+shift+`",
+        "mac": "cmd+shift+2"
+      }
+    ],
+    "configuration": {
+      "title": "Git Popups",
+      "properties": {
+        "gitPopups.favoriteBranches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "main",
+            "master",
+            "develop"
+          ],
+          "description": "Branches marked with a star and shown at the top of the Branches popup."
+        },
+        "gitPopups.recentBranchesLimit": {
+          "type": "number",
+          "default": 5,
+          "description": "How many recently checked-out branches to show in the Recent group."
+        },
+        "gitPopups.showStatusBarItem": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a status bar item with the current branch that opens the Branches popup."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "bundle": "esbuild src/extension.ts --bundle --platform=node --external:vscode --outfile=out/extension.js --sourcemap",
+    "test": "tsc -p . && mocha out/test/**/*.test.js",
+    "package": "npm run bundle && vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.19.43",
+    "@types/vscode": "~1.85.0",
+    "@vscode/vsce": "^4.1.1",
+    "esbuild": "^0.28.2",
+    "mocha": "^12.0.3",
+    "typescript": "^5.9.3"
+  }
+}
