@@ -54,7 +54,7 @@ function toQP(items: PopupItem[]): QPItem[] {
     const descParts: string[] = [];
     if (it.description) descParts.push(it.description);
     if (it.shortcut) descParts.push(it.shortcut);
-    if (it.disabled) descParts.push('— недоступно');
+    if (it.disabled) descParts.push('(unavailable)');
     out.push({
       label: `${icon}${prefix}${it.label}${it.children ? '  ›' : ''}`,
       description: descParts.join('   '),
@@ -95,7 +95,7 @@ export async function showPopup(items: PopupItem[] | (() => Promise<PopupItem[]>
       qp.hide();
       const kids = it.children;
       await showPopup(async () => kids(), {
-        title: it.childrenTitle ?? it.label,
+        title: `${opts.title} › ${it.childrenTitle ?? it.label}`,
         mnemonics: opts.mnemonics,
         onBack: () => void showPopup(items, opts),
       });

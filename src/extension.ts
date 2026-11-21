@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
 import { CliGitService } from './git/gitService';
 import { showVcsOperationsPopup } from './popups/vcsOperationsPopup';
-import { showBranchesPopup } from './popups/branchesPopup';
+import { showBranchesPopup, registerBranchCommands } from './popups/branchesPopup';
 
 export function activate(context: vscode.ExtensionContext) {
   const git = new CliGitService();
   const ctx = { git, extension: context };
+  registerBranchCommands(ctx);
 
   context.subscriptions.push(
     vscode.commands.registerCommand('gitPopups.vcsOperations', () => showVcsOperationsPopup(ctx)),
